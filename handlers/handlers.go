@@ -4,34 +4,21 @@ import (
 	"encoding/json"
 	_ "go/types"
 	"net/http"
+	"sms/models"
 	"sms/redis"
 	"sms/services"
 	"sms/utils"
 	"sms/zook"
 )
 
-type Payload struct {
-	PhoneNumber string `json:"phone_number"`
-}
-
-type PayloadVerification struct {
-	Token string `json:"token"`
-	Otp string `json:"otp"`
-}
-
-type PayloadVerificationResult struct {
-	Success bool `json:"success"`
-	Message string `json:"message"`
-}
-
-type Response struct {
-	Token string `json:"token"`
-}
-
-
 func PhoneNumberHandler(w http.ResponseWriter, r *http.Request) {
-	var payload Payload
+	var payload models.Payload
 	json.NewDecoder(r.Body).Decode(&payload)
+	err := payload.IsValid()
+	if err != nil {
+		zook.BadRequest(w, err)
+		return
+	}
 	var phonenumber = payload.PhoneNumber
 
 	value, er := redis.GetValue(phonenumber)
@@ -49,12 +36,12 @@ func PhoneNumberHandler(w http.ResponseWriter, r *http.Request) {
 
 		return
 	}
-	response := Response{Token: token}
+	response := models.PayloadResult{Token: token}
 	utils.JsonResponse(w, response)
 }
 
 func CodeVerificationHandler(w http.ResponseWriter, r *http.Request) {
-	var payload PayloadVerification
+	var payload models.PayloadVerification
 	json.NewDecoder(r.Body).Decode(&payload)
 
 	err := services.VerificateOtp(payload.Token, payload.Otp)
@@ -62,6 +49,6 @@ func CodeVerificationHandler(w http.ResponseWriter, r *http.Request) {
 		zook.BadRequest(w, err)
 		return
 	}
-	response := PayloadVerificationResult{Success: true, Message: "Успешная верификация"}
+	response := models.PayloadVerificationResult{Success: true, Message: "Успешная верификация"}
 	utils.JsonResponse(w, response)
 }
