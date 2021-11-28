@@ -23,17 +23,17 @@
 `go get https://github.com/a1k89/go-otp`
 
 #### How to use
-1. Generate token:
+1. First step:
 ```GO
-POST: `/generate/` {"phone_number":"PHONE_NUMBER"}
+Method: POST
+URL: `/generate/`
+Payload: {"phone_number":"<phone_number>"}
+Response: {"token": "<TOKEN>"}
 ```
-2. Verification:
+2. Second step:
 ```GO
-POST `/verificate/` 
-Payload: {
-	    "token":"<TOKEN>", 
-	    "otp": "<OTP_FROM_SMS>"}
-Response: {
-	"status": true/false,
-	"message":"success message"}
+Method: POST
+URL: `/verificate/` 
+Payload: {"token":"<TOKEN>", "otp": "<OTP_FROM_SMS>"}
+Response: {"status": true/false, "message":"success message"}
 ```
