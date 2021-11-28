@@ -7,24 +7,24 @@ import (
 	"sms/utils"
 )
 
-func GenerateOtp(phonenumber string) (string,error) {
+func GenerateOtp(phonenumber string) (string, string, error) {
 	otp := utils.RandomValue(4)
 	fmt.Print("code", otp)
 	err := redis.SetValue(phonenumber, otp)
 	if err != nil {
-		return "", err
+		return "", "", err
 	}
 	token, errs := utils.RandomToken()
 	if errs != nil {
-		return "", errs
+		return "","", errs
 	}
 
 	err = redis.SetValue(token, phonenumber)
 	if err != nil {
-		return "", err
+		return "","", err
 	}
 
-	return token, nil
+	return token, otp, nil
 }
 
 func VerificateOtp(token string, otp string) error {
