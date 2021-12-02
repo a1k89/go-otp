@@ -24,10 +24,9 @@ func PhoneNumberHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Check availability to create OTP
 	var phonenumber = payload.PhoneNumber
-	value, er := redis.GetValue(phonenumber)
+	value, _ := redis.GetValue(phonenumber)
 	if value != "" {
 		zook.BadRequest(w, "Слишком рано. Повторите попытку позже")
-		utils.WriteToSysLog(er)
 		return
 	}
 
@@ -35,7 +34,6 @@ func PhoneNumberHandler(w http.ResponseWriter, r *http.Request) {
 	token,otp, err := services.GenerateOtp(phonenumber)
 	if err != nil {
 		zook.BadRequest(w, "Ошибка генерации кода верификации")
-		utils.WriteToSysLog(err)
 		return
 	}
 
