@@ -2,11 +2,12 @@ package redis
 
 import (
 	"github.com/go-redis/redis"
+	"os"
 	"time"
 )
 
 var redisClient = redis.NewClient(&redis.Options{
-	Addr:     "redis:6379",
+	Addr:     os.Getenv("REDIS_HOST"),
 	Password: "",
 	DB: 0,
 })

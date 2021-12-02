@@ -38,11 +38,11 @@ func PhoneNumberHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Send OTP to user mobile phone
-	transportHandler := transport.Transport{
+	mgf := transport.Megafon{
 		To: phonenumber,
 		From: phonenumber,
-		Message: otp }
-	go transportHandler.SendSms()
+		Message: otp}
+	go transport.SendMessage(mgf)
 
 	response := models.PayloadResult{Token: token}
 	utils.JsonResponse(w, response)
