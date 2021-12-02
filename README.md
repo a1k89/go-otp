@@ -22,6 +22,11 @@
 #### Installation:
 `go get https://github.com/a1k89/go-otp`
 
+#### Docker-compose
+1. Git clone 
+2. `docker-compose build`
+3. `docker-compose up -d`
+
 #### How to use
 1. First step:
 ```GO
