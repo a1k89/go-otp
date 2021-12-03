@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 	"net/http"
@@ -10,7 +11,7 @@ import (
 func main(){
 	err := godotenv.Load()
 	if err != nil {
-		panic("Can't load env file")
+		fmt.Print("Cant' load env file")
 	}
 	r := mux.NewRouter()
 	r.HandleFunc("/generate/", handlers.PhoneNumberHandler).Methods("POST")
