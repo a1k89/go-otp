@@ -27,7 +27,7 @@ func (t Megafon) hash() string {
 func (t Megafon) SendSms() {
 	jsonData, _ := json.Marshal(t)
 	header := fmt.Sprintf("Basic %s", t.hash())
-	request, err := http.Post(os.Getenv("TRANSPORT_URL"), "application/json", bytes.NewBuffer(jsonData))
+	request, err := http.Post(os.Getenv("TRANSPORT_CRED_URL"), "application/json", bytes.NewBuffer(jsonData))
 	request.Header.Set("Authorization", header)
 	if err != nil {
 		fmt.Print("Error", err)

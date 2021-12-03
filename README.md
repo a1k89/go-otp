@@ -27,6 +27,15 @@
 2. `docker-compose build`
 3. `docker-compose up -d`
 
+#### Environments (example)
+
+1. REDIS_HOST=localhost:6379
+2. TRANSPORT_CRED_LOGIN
+3. TRANSPORT_CRED_PASSWORD
+4. TRANSPORT_CRED_FROM=79211234567
+5. TRANSPORT_CRED_URL
+6. OTP=1111 # When debug. Empty (or nil) in production
+
 #### How to use
 1. First step:
 ```GO

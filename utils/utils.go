@@ -7,11 +7,16 @@ import (
 	"log/syslog"
 	"math/rand"
 	"net/http"
+	"os"
 	"strconv"
 	"time"
 )
 
 func RandomValue(size int) string {
+	otp := os.Getenv("OTP")
+	if otp != "" {
+		return otp
+	}
 	var result string
 	rand.Seed(time.Now().UnixNano())
 	for i := 0; i < size; i++ {
