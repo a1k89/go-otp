@@ -42,6 +42,7 @@ func PhoneNumberHandler(w http.ResponseWriter, r *http.Request) {
 		To: phonenumber,
 		From: phonenumber,
 		Message: otp}
+
 	go transport.SendMessage(mgf)
 
 	response := models.PayloadResult{Token: token}

@@ -32,7 +32,3 @@ type PayloadVerificationResult struct {
 	Success bool `json:"success"`
 	Message string `json:"message"`
 }
-
-type Configuration struct {
-	RedisHost string
-}
