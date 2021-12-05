@@ -1,31 +1,32 @@
 ## Go-OTP
-#### Go realization to otp authentication (gRPC or REST)
+#### Go otp authentication (gRPC and RESTful)
 
-#### Stack:
-1. Redis (Save OTP and token)
+1. Redis as database
 2. Go
 3. SMS provider (Megafon as example)
+4. gRPC and RESTful support
 
-#### Schema:
+#### Idea:
+**First step**
 1. User send `phonenumber` (ex.79212345555)
-2. `Go-OTP` validate it
-3. `Go-OTP` generate random code (4-6 digits)
-4. Save `phonenumber:otp` in `Redis`
-5. Generate random `token`
-6. Save `token:phonenumber` in `Redis`
-7. Send back `token` to user and send `async` sms code (goroutine)
-8. User send `token + otp`
-9. Get (Redis): `token -> phonenumber -> code`
-10. Compare both `otps`
-11. Send result to user
+2. Generate random code
+3. Save `phonenumber:otp` in `Redis`
+4. Generate random `token`
+5. Save `token:phonenumber` in `Redis`
+6. Send back `token`
+
+**Last step:**
+1. Send `token + otp` (got from first step)
+2. Fetch otp from redis: `token -> phonenumber -> code`
+3. Compare otp
+4. Send result to user (success:true/false)
 
 #### Installation:
 `go get https://github.com/a1k89/go-otp`
 
-#### Docker-compose
-1. Git clone 
-2. `docker-compose build`
-3. `docker-compose up -d`
+#### Or use docker-compose
+1. `docker-compose build`
+2. `docker-compose up -d`
 
 #### Environments (example)
 
@@ -36,24 +37,25 @@
 5. TRANSPORT_CRED_URL
 6. OTP=1111 # When debug. Empty (or nil) in production
 
-#### How to use
+#### How to use 
+#### RESTful
 1. First step:
 ```GO
 Method: POST
 URL: `/generate/`
 Payload: {"phone_number":"<phone_number>"}
-Response: {"token": "<TOKEN>"}
+Response: {"token": "bla-bla-token"}
 ```
 2. Second step:
 ```GO
 Method: POST
 URL: `/verificate/` 
-Payload: {"token":"<TOKEN>", "otp": "<OTP_FROM_SMS>"}
+Payload: {"token":"bla-bla-token", "otp": "1111"}
 Response: {"status": true/false, "message":"success message"}
 ```
 #### gRPC
-1. Located in `proto/otp.proto`
-```azure
+1. `proto/otp.proto`
+```
 syntax = "proto3";
 package proto;
 
@@ -82,3 +84,6 @@ message PayloadVerificateResponse {
   string message = 2;
 }
 ```
+2. Generate gRPC server (for your language)
+3. Use code from step2, make logic to get token and verify it
+
