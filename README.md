@@ -51,3 +51,34 @@ URL: `/verificate/`
 Payload: {"token":"<TOKEN>", "otp": "<OTP_FROM_SMS>"}
 Response: {"status": true/false, "message":"success message"}
 ```
+#### gRPC
+1. Located in `proto/otp.proto`
+```azure
+syntax = "proto3";
+package proto;
+
+option go_package = "github.com/monkrus/grpc-from0;grpc_from0";
+
+service Payload{
+  rpc Generate (PayloadGenerateRequest) returns (PayloadGenerateResponse){}
+  rpc Verificate (PayloadVerificateRequest) returns (PayloadVerificateResponse){}
+}
+
+message PayloadGenerateRequest {
+  string phone_number = 1;
+}
+
+message PayloadGenerateResponse {
+  string token = 1;
+}
+
+message PayloadVerificateRequest {
+  string token = 1;
+  string otp = 2;
+}
+
+message PayloadVerificateResponse {
+  bool success = 1;
+  string message = 2;
+}
+```
