@@ -2,29 +2,43 @@ package services
 
 import (
 	"errors"
-	"fmt"
 	"sms/redis"
+	"sms/transport"
 	"sms/utils"
 )
 
-func GenerateOtp(phonenumber string) (string, string, error) {
+func GenerateOtp(phonenumber string) (string, error) {
+	// Check if not exist
+	value, _ := redis.GetValue(phonenumber)
+	if value != "" {
+		return "", errors.New("Слишком рано. Повторите попытку позже")
+	}
+	// Generate and set random value
 	otp := utils.RandomValue(4)
-	fmt.Print("code", otp)
 	err := redis.SetValue(phonenumber, otp)
 	if err != nil {
-		return "", "", err
+		return "", err
 	}
+	// Generate and set token
 	token, errs := utils.RandomToken()
 	if errs != nil {
-		return "","", errs
+		return "", errs
 	}
 
 	err = redis.SetValue(token, phonenumber)
 	if err != nil {
-		return "","", err
+		return "", err
 	}
 
-	return token, otp, nil
+	// Send OTP to user mobile phone
+	mgf := transport.Megafon{
+		To: phonenumber,
+		From: phonenumber,
+		Message: otp}
+
+	go transport.SendMessage(mgf)
+
+	return token, nil
 }
 
 func VerificateOtp(token string, otp string) error {

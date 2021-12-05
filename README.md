@@ -1,5 +1,5 @@
 ## Go-OTP
-#### Go realization to otp authentication
+#### Go realization to otp authentication (gRPC or REST)
 
 #### Stack:
 1. Redis (Save OTP and token)
