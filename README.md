@@ -1,23 +1,23 @@
 ## Go-OTP
 #### Go otp authentication (gRPC and RESTful)
 
-1. Redis as database
-2. Go
-3. SMS provider (Megafon as example)
-4. gRPC and RESTful support
+1. Redis
+2. Go 3
+3. gRPC 
+4. REST api
 
 #### Idea:
 **First step**
-1. User send `phonenumber` (ex.79212345555)
+1. Send `phone_number` (ex.79212345555)
 2. Generate random code
-3. Save `phonenumber:otp` in `Redis`
+3. Save `phone_number:otp` in `Redis`
 4. Generate random `token`
-5. Save `token:phonenumber` in `Redis`
+5. Save `token:phone_number` in `Redis`
 6. Send back `token`
 
 **Last step:**
 1. Send `token + otp` (got from first step)
-2. Fetch otp from redis: `token -> phonenumber -> code`
+2. Fetch otp from redis: `token -> phone_number -> code`
 3. Compare otp
 4. Send result to user (success:true/false)
 
@@ -35,10 +35,10 @@
 3. TRANSPORT_CRED_PASSWORD
 4. TRANSPORT_CRED_FROM=79211234567
 5. TRANSPORT_CRED_URL
-6. OTP=1111 # When debug. Empty (or nil) in production
+6. OTP=1111 # Only while debug
 
 #### How to use 
-#### RESTful
+#### REST api
 1. First step:
 ```GO
 Method: POST
@@ -84,6 +84,6 @@ message PayloadVerificateResponse {
   string message = 2;
 }
 ```
-2. Generate gRPC server (for your language)
-3. Use code from step2, make logic to get token and verify it
+2. Generate gRPC client (python/java/go and etc)
+3. Write gRPC client logic (using step2 above)
 
