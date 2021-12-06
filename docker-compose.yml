@@ -12,9 +12,12 @@ services:
     depends_on:
       - redis-server
     environment:
-      - REDIS_HOST=redis-server:6379
+      - REDIS_HOST=redis-server:6377
 
   redis-server:
     image: "redis:alpine"
+    command: --port 6377
     ports:
-      - "6379:6379"
+      - "6377:6377"
+    expose:
+      - "6377"
