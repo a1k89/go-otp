@@ -26,7 +26,7 @@
 
 #### Or use docker-compose
 1. `docker-compose build`
-2. `docker-compose up -d`
+2. `docker-compose up -d OTP_PORT=8080 OTP_GRPC_PORT=3000`
 
 #### Environments (example)
 
