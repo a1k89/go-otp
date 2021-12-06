@@ -25,8 +25,8 @@
 `go get https://github.com/a1k89/go-otp`
 
 #### Or use docker-compose
-1. `docker-compose build`
-2. `docker-compose up -d OTP_PORT=8080 OTP_GRPC_PORT=3000`
+1. `OTP_PORT=8080 OTP_GRPC_PORT=3000 docker-compose build`
+2. `OTP_PORT=8080 OTP_GRPC_PORT=3000 docker-compose up -d`
 
 #### Environments (example)
 
