@@ -8,13 +8,13 @@ services:
     ports:
       - "8080:80"
       - "3000:3000"
-    depends_on:
-      - redis
-    environment:
-      - REDIS_HOST=redis:6379
     restart: always
+    depends_on:
+      - redis-server
+    environment:
+      - REDIS_HOST=redis-server:6379
 
-  redis:
+  redis-server:
     image: "redis:alpine"
     ports:
       - "6379:6379"
