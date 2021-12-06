@@ -3,7 +3,6 @@ package services
 import (
 	"errors"
 	"sms/redis"
-	"sms/transport"
 	"sms/utils"
 )
 
@@ -31,12 +30,13 @@ func GenerateOtp(phonenumber string) (string, error) {
 	}
 
 	// Send OTP to user mobile phone
-	mgf := transport.Megafon{
+	/*mgf := transport.Megafon{
 		To: phonenumber,
 		From: phonenumber,
 		Message: otp}
+	*/
 
-	go transport.SendMessage(mgf)
+	//go transport.SendMessage(mgf)
 
 	return token, nil
 }
