@@ -27,10 +27,18 @@ func (t Megafon) hash() string {
 func (t Megafon) SendSms() {
 	jsonData, _ := json.Marshal(t)
 	header := fmt.Sprintf("Basic %s", t.hash())
-	request, err := http.Post(os.Getenv("TRANSPORT_CRED_URL"), "application/json", bytes.NewBuffer(jsonData))
-	request.Header.Set("Authorization", header)
+	request, err := http.NewRequest("POST", os.Getenv("TRANSPORT_CRED_URL"),bytes.NewBuffer(jsonData))
 	if err != nil {
-		fmt.Print("Error", err)
+		fmt.Printf("NewRequest error: %s", err)
+		return
 	}
-	fmt.Print("Request", request)
+	request.Header.Set("Authorization", header)
+	request.Header.Set("content-type","application/json")
+	client := http.Client{}
+
+	_, err = client.Do(request)
+	if err != nil {
+		fmt.Printf("Send message error: %s", err)
+	}
+
 }
