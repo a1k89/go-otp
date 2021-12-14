@@ -11,7 +11,7 @@ func GenerateOtp(phonenumber string) (string, error) {
 	// Check if not exist
 	value, _ := redis.GetValue(phonenumber)
 	if value != "" {
-		return "", errors.New("Слишком рано. Повторите попытку позже")
+		return "", errors.New("Повторите попытку позже")
 	}
 	// Generate and set random value
 	otp := utils.RandomValue(4)

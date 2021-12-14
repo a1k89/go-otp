@@ -10,10 +10,10 @@ type Payload struct {
 }
 
 func (p *Payload) IsValid() error {
-	pattern := regexp.MustCompile(`\d{11,20}`)
+	pattern := regexp.MustCompile(`\d{11,14}`)
 	matched := pattern.MatchString(p.PhoneNumber)
 	if !matched {
-		return errors.New("Номер телефона должен содержать только цифры")
+		return errors.New("Ошибка валидации номера телефона")
 	}
 
 	return nil
